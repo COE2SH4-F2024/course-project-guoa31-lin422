@@ -21,16 +21,28 @@ objPos::objPos(int xPos, int yPos, char sym)
 
 objPos::~objPos() //Destructor
 {
-
+    delete pos;
+    pos = nullptr;
 }
 
 objPos::objPos(const objPos& obj) //Copy 
 {
+    pos = new Pos;
+    pos->x = obj.pos->x;
+    pos->y = obj.pos->y;
+    symbol = obj.symbol;
+}   
 
-}
-
-objPos& objPos::operator= (const objPos& obj)
+objPos& objPos::operator= (const objPos& obj) //Copy Assignment
 {
+    if(this == &obj) return *this;
+    delete pos;
+
+    pos = new Pos;
+    pos->x = obj.pos->x;
+    pos->y = obj.pos->y;
+    symbol = obj.symbol;
+
     return *this;
 }
 
