@@ -1,7 +1,7 @@
-#include <iostream>
 #include "MacUILib.h"
 #include "objPos.h"
 #include "GameMechs.h"
+#include <iostream>
 
 using namespace std;
 
@@ -17,7 +17,9 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
-GameMechs *game = new GameMechs(50,30);
+char test;
+
+GameMechs *game = new GameMechs();
 
 
 
@@ -28,10 +30,13 @@ int main(void)
 
     while(game->getExitFlagStatus() == false && game->getLoseFlagStatus() == false)  
     {
-        GetInput();
+        // cout << "Checking for input..." << endl;
+        GetInput();    
+        // cout << "Running game logic..." << endl;
         RunLogic();
-        DrawScreen();
-        LoopDelay();
+        // cout << "Drawing screen..." << endl;
+        DrawScreen();  
+        LoopDelay();   
     }
 
     CleanUp();
@@ -48,13 +53,14 @@ void Initialize(void)
 
 void GetInput(void)
 {
-    if (MacUILib_hasChar) {
-        game->setInput(MacUILib_getChar());
+    if (MacUILib_hasChar()) {
+        char input = MacUILib_getChar();
+        game->setInput(input);
+    } else {
+        game->clearInput();
     }
-
-    //Debug Code:
-    cout << "input is: " << game->getInput() << endl;
 }
+
 
 void RunLogic(void)
 {
@@ -73,11 +79,14 @@ void RunLogic(void)
     if(game->getInput() == 108) {
         game->setLoseFlag();
     }
+
+    game->clearInput();
 }
 
 void DrawScreen(void)
 {
     MacUILib_clearScreen();    
+    game->printBoard();
 }
 
 void LoopDelay(void)
@@ -92,8 +101,8 @@ void CleanUp(void)
 
     if(game->getLoseFlagStatus() == true) 
     {
-        cout <<"Custom Lose Message"<< endl;
-        cout <<"Score: " << game->getScore() << endl;
+        MacUILib_printf("Custom Lose Message \n");
+        MacUILib_printf("Score = %d", game->getScore());
     }
 
     MacUILib_uninit();

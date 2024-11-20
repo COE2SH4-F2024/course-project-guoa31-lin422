@@ -1,4 +1,5 @@
 #include "GameMechs.h"
+#include "MacUILib.h"
 
 GameMechs::GameMechs()
 {
@@ -8,6 +9,32 @@ GameMechs::GameMechs()
     loseFlag = false;
     score = 0;
     input = '\0';
+
+    board = new char*[boardSizeY];
+
+    for(int i = 0; i < boardSizeY; i++)
+    {
+        board[i] = new char[boardSizeX];
+    }
+
+    for(int i = 0; i < boardSizeY; i++) 
+    {
+        for(int j = 0; j < boardSizeX; j++)
+        {
+            if (i == 0 || i == boardSizeY - 1)
+            {
+                board[i][j] = '#';
+            } else if (j == 0 || j == boardSizeX - 1)
+            {
+                board[i][j] = '#';
+            } else 
+            {
+                board[i][j] = ' ';
+            }
+        }
+    }
+
+    
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
@@ -21,12 +48,43 @@ GameMechs::GameMechs(int boardX, int boardY)
     loseFlag = false;
     score = 0;
     input  = '\0';
+
+    board = new char*[boardSizeY];
+
+    for(int i = 0; i < boardSizeY; i++)
+    {
+        board[i] = new char[boardSizeX];
+    }
+
+    for(int i = 0; i < boardSizeY; i++) 
+    {
+        for(int j = 0; j < boardSizeX; j++)
+        {
+            if (i == 0 || i == boardSizeY - 1)
+            {
+                board[i][j] = '#';
+            } else if (j == 0 || j == boardSizeX - 1)
+            {
+                board[i][j] = '#';
+            } else 
+            {
+                board[i][j] = ' ';
+            }
+        }
+    }
 }
 
 // do you need a destructor?
 GameMechs::~GameMechs()
 {
-    
+    for(int i = 0; i < boardSizeX; i++) 
+    {
+        delete[] board[i];
+        board[i] = nullptr;
+    }
+
+    delete[] board;
+    board = nullptr;
 }
 
 bool GameMechs::getExitFlagStatus() const
@@ -83,7 +141,20 @@ void GameMechs::setInput(char this_input)
 
 void GameMechs::clearInput()
 {
-
+    input = '\0';
 }
 
 // More methods should be added here
+
+
+void GameMechs::printBoard()
+{
+    for(int i = 0; i < boardSizeY; i++)
+    {
+        for(int j = 0; j < boardSizeX; j++)
+        {
+            MacUILib_printf("%c", board[i][j]);
+        }
+        MacUILib_printf("\n");
+    }
+}
