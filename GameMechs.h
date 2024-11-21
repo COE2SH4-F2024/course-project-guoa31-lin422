@@ -20,6 +20,8 @@ class GameMechs
         int boardSizeX;
         int boardSizeY;
 
+        char **board; // New variable holds game board;
+
         objPos food;
 
     public:
@@ -40,9 +42,10 @@ class GameMechs
         int getBoardSizeY() const;
         
         int getScore() const;
-        void incrementScore();
+        void incrementScore(int val);
         
         // More methods should be added here
+        void printBoard();
 };
 
 #endif
