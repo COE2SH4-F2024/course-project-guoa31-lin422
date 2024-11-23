@@ -1,4 +1,5 @@
 #include "GameMechs.h"
+#include "MACUILib.h"
 
 GameMechs::GameMechs()
 {
@@ -29,7 +30,10 @@ bool GameMechs::getLoseFlagStatus() const
 
 char GameMechs::getInput() const
 {
-
+    if (MacUILib_hasChar()){
+        char input = MacUILib_getChar();
+        printf("Key Pressed: %c\n", input);
+    }
 }
 
 int GameMechs::getScore() const
