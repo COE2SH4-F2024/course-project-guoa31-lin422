@@ -6,9 +6,7 @@ Player::Player(GameMechs* thisGMRef)
     myDir = STOP;
 
     // more actions to be included
-    playerPos.pos->x = mainGameMechsRef->getBoardSizeX()/2;
-    playerPos.pos->y = mainGameMechsRef->getBoardSizeY()/2;
-    playerPos.symbol = '@';
+    playerPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2,mainGameMechsRef->getBoardSizeY()/2,'*');
 }
 
 
@@ -20,6 +18,7 @@ Player::~Player()
 objPos Player::getPlayerPos() const
 {
         // return the reference to the playerPos arrray list
+        return playerPos.getObjPos();
 }
 
 void Player::updatePlayerDir()
@@ -72,16 +71,17 @@ void Player::movePlayer()
             break;
     }
 
-    if (playerPos.pos->x > mainGameMechsRef->getBoardSizeX()) {
+    if (playerPos.pos->x > mainGameMechsRef->getBoardSizeX()-2) {
         playerPos.pos->x = 1;
     }
     else if (playerPos.pos->x < 1) {
-        playerPos.pos->x = mainGameMechsRef->getBoardSizeX();
+        playerPos.pos->x = mainGameMechsRef->getBoardSizeX()-2;
     }
-    else if (playerPos.pos->y < 1) {
-        playerPos.pos->y = mainGameMechsRef->getBoardSizeY();
+    
+    if (playerPos.pos->y < 1) {
+        playerPos.pos->y = mainGameMechsRef->getBoardSizeY()-2;
     }
-    else if (playerPos.pos->y > mainGameMechsRef->getBoardSizeY()) {
+    else if (playerPos.pos->y > mainGameMechsRef->getBoardSizeY()-2) {
         playerPos.pos->y = 1;
     }
 
