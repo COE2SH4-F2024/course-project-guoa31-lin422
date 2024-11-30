@@ -2,6 +2,7 @@
 #include "objPos.h"
 #include "GameMechs.h"
 #include <iostream>
+#include "Player.h"
 
 using namespace std;
 
@@ -20,6 +21,7 @@ void CleanUp(void);
 char test;
 
 GameMechs *game = new GameMechs();
+Player *player = new Player(game);
 
 
 
@@ -49,6 +51,7 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
+
 }
 
 void GetInput(void)
@@ -57,13 +60,19 @@ void GetInput(void)
         char input = MacUILib_getChar();
         game->setInput(input);
     } else {
-        game->clearInput();
+        // game->clearInput();
     }
 }
 
 
 void RunLogic(void)
 {
+
+    //Player stuff
+    player->updatePlayerDir();
+    player->movePlayer();
+
+
     if(game->getInput() == 27) {
         game->setExitTrue();
     }
@@ -80,13 +89,34 @@ void RunLogic(void)
         game->setLoseFlag();
     }
 
-    game->clearInput();
+    // game->clearInput();
 }
 
 void DrawScreen(void)
 {
     MacUILib_clearScreen();    
-    game->printBoard();
+    for(int i = 0; i < game->getBoardSizeY(); i++)
+    {
+        for(int j = 0; j < game->getBoardSizeX(); j++)
+        {
+            if(j ==  player->getPlayerPos().pos->x && i == player->getPlayerPos().pos->y)
+            {
+                MacUILib_printf("%c", player->getPlayerPos().symbol);
+            } else if (i == 0 || i == game->getBoardSizeY() - 1)
+            {
+                MacUILib_printf("#");
+            } else if (j == 0 || j == game->getBoardSizeX() - 1)
+            {
+                MacUILib_printf("#");
+            } else 
+            {
+                MacUILib_printf(" ");
+            }
+        }
+        MacUILib_printf("\n");
+    }
+    MacUILib_printf("Last key pressed: %c\n", game->getInput());
+    MacUILib_printf("Player position: (%d,%d) \n",player->getPlayerPos().pos->x,player->getPlayerPos().pos->y);
 }
 
 void LoopDelay(void)

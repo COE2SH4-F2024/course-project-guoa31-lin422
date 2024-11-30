@@ -5,7 +5,9 @@
 
 objPosArrayList::objPosArrayList()
 {
-    
+    arrayCapacity = ARRAY_MAX_CAP;
+    listSize = 0;
+    aList = new objPos[ARRAY_MAX_CAP];
 }
 
 objPosArrayList::~objPosArrayList()
@@ -15,7 +17,7 @@ objPosArrayList::~objPosArrayList()
 
 int objPosArrayList::getSize() const
 {
-
+    return listSize;
 }
 
 void objPosArrayList::insertHead(objPos thisPos)
