@@ -17,22 +17,6 @@ GameMechs::GameMechs()
         board[i] = new char[boardSizeX];
     }
 
-    for(int i = 0; i < boardSizeY; i++) 
-    {
-        for(int j = 0; j < boardSizeX; j++)
-        {
-            if (i == 0 || i == boardSizeY - 1)
-            {
-                board[i][j] = '#';
-            } else if (j == 0 || j == boardSizeX - 1)
-            {
-                board[i][j] = '#';
-            } else 
-            {
-                board[i][j] = ' ';
-            }
-        }
-    }
 
     
 }
@@ -56,36 +40,14 @@ GameMechs::GameMechs(int boardX, int boardY)
         board[i] = new char[boardSizeX];
     }
 
-    for(int i = 0; i < boardSizeY; i++) 
-    {
-        for(int j = 0; j < boardSizeX; j++)
-        {
-            if (i == 0 || i == boardSizeY - 1)
-            {
-                board[i][j] = '#';
-            } else if (j == 0 || j == boardSizeX - 1)
-            {
-                board[i][j] = '#';
-            } else 
-            {
-                board[i][j] = ' ';
-            }
-        }
-    }
 }
 
 // do you need a destructor?
-GameMechs::~GameMechs()
-{
-    for(int i = 0; i < boardSizeX; i++) 
-    {
-        delete[] board[i];
-        board[i] = nullptr;
-    }
+// GameMechs::~GameMechs()
+// {
 
-    delete[] board;
-    board = nullptr;
-}
+// }
+// Use default destructor, no dynamic memory allocation
 
 bool GameMechs::getExitFlagStatus() const
 {
@@ -145,16 +107,3 @@ void GameMechs::clearInput()
 }
 
 // More methods should be added here
-
-
-void GameMechs::printBoard()
-{
-    for(int i = 0; i < boardSizeY; i++)
-    {
-        for(int j = 0; j < boardSizeX; j++)
-        {
-            MacUILib_printf("%c", board[i][j]);
-        }
-        MacUILib_printf("\n");
-    }
-}
