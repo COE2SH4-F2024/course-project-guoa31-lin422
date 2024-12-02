@@ -2,11 +2,11 @@
 
 Food::Food(GameMechs* thisGMRef)
 {
-    foodPos.setObjPos(500, 500, '*'); //default values, set outside board
+    foodPos.setObjPos(500, 500, 36); //default values, set outside board
     GMRef = thisGMRef;
 }
 
-void Food::generateFood(objPos blockOff)
+void Food::generateFood(objPosArrayList* blockOff)
 {
     //Randomize
     
@@ -17,14 +17,16 @@ void Food::generateFood(objPos blockOff)
         int randomY = rand()%(GMRef->getBoardSizeY() - 2) + 1;
 
         // Bad Case 1 (Same position as character)
-        if(randomX == blockOff.getObjPos().pos->x && randomY ==  blockOff.getObjPos().pos->y)
-        {
-            meetsCriteria = false;
-        }
+        for(int i = 0; i < blockOff->getSize(); i++)
+            if(randomX == blockOff->getElement(i).pos->x && randomY ==  blockOff->getElement(i).pos->y)
+            {
+                meetsCriteria = false;
+                break;
+            }
 
         if(meetsCriteria)
         {
-        foodPos.setObjPos(randomX,randomY,'*');
+        foodPos.setObjPos(randomX,randomY,36);
         }
 
 
