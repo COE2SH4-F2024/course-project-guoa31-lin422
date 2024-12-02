@@ -96,6 +96,7 @@ void Player::movePlayer()
     if(x == mainFoodRef->getFoodPos().pos->x && y == mainFoodRef->getFoodPos().pos->y){
         playerPosList->insertHead(objPos(x,y,sym)); 
         mainFoodRef->generateFood(playerPosList);
+        mainGameMechsRef->incrementScore(1);
     } else {
         playerPosList->insertHead(objPos(x,y,sym));
         playerPosList->removeTail();
