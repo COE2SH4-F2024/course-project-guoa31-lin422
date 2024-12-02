@@ -19,6 +19,7 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
+bool win = false;
 char test;
 
 GameMechs *game;
@@ -102,19 +103,29 @@ void RunLogic(void)
 
 
     game->clearInput(); //remove to debug
+
+    if(player->getPlayerPos()->getSize() > ARRAY_MAX_CAP) {
+        game->setExitTrue();
+        game->setLoseFlag();
+        win = true;
+    }
 }
 
 void DrawScreen(void)
 {   
-    bool hasPlayer = false;
+    bool hasPlayer = false, hasFood = false;
     objPosArrayList* playerList = player->getPlayerPos();
     objPos playerPart;
+    objPosArrayList* foodPart = food->getFoodPos();
+
     MacUILib_clearScreen();    
     for(int i = 0; i < game->getBoardSizeY(); i++)
     {
         for(int j = 0; j < game->getBoardSizeX(); j++)
         {
+            hasFood = false;
             hasPlayer = false;
+            
             for(int k = 0; k < playerList->getSize(); k++) 
             {
                 playerPart = playerList->getElement(k);
@@ -124,15 +135,23 @@ void DrawScreen(void)
                     hasPlayer = true;
                     break;
                 }
-
             }
+
             if(!hasPlayer)
             {
-                if (j == food->getFoodPos().pos->x && i == food->getFoodPos().pos->y )
+                for(int k = 0; k < FOOD_CAP; k++)
                 {
-                    MacUILib_printf("%c", food->getFoodPos().symbol);
+                    if (j == foodPart->getElement(k).pos->x && i == foodPart->getElement(k).pos->y )
+                    {
+                        MacUILib_printf("%c", foodPart->getElement(k).symbol);
+                        hasFood = true;
+                    }
                 }
-                else if (i == 0 || i == game->getBoardSizeY() - 1)
+            }
+
+            if(!hasPlayer && !hasFood)
+            {
+                if (i == 0 || i == game->getBoardSizeY() - 1)
                 {
                     MacUILib_printf("#");
                 } 
@@ -149,9 +168,16 @@ void DrawScreen(void)
         MacUILib_printf("\n");
     }
     MacUILib_printf("Player position: (%d,%d) \n",player->getPlayerPos()->getHeadElement().pos->x,player->getPlayerPos()->getHeadElement().pos->y);
-    MacUILib_printf("Food position: (%d,%d)\n", food->getFoodPos().pos->x,food->getFoodPos().pos->y);
+    MacUILib_printf("Food positions: ");
+    for (int k = 0; k < FOOD_CAP; k++) 
+    {
+    objPos foodItem = foodPart->getElement(k);
+    MacUILib_printf("(%d,%d) ", foodItem.pos->x, foodItem.pos->y);
+    }
+    MacUILib_printf("\n");
     MacUILib_printf("Score: %d\n", game->getScore());
 }
+
 
 void LoopDelay(void)
 {
@@ -166,6 +192,9 @@ void CleanUp(void)
     if(game->getLoseFlagStatus() == true) 
     {
         MacUILib_printf("Custom Lose Message \n");
+        if(win) {
+            MacUILib_printf("You win! (Exceeded Arraylist size)\n");
+        }
         MacUILib_printf("Score = %d", game->getScore());
     }
 

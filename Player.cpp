@@ -63,6 +63,8 @@ void Player::movePlayer()
     int boardX = mainGameMechsRef->getBoardSizeX();
     int boardY = mainGameMechsRef->getBoardSizeY();
     char sym = 254;
+    bool hasFood = false;
+    objPosArrayList* foodList = mainFoodRef->getFoodPos();
     switch (myDir) {
         case UP:
             y -= 1;
@@ -93,16 +95,33 @@ void Player::movePlayer()
     else if (y > boardY-2) {    
         y = 1;
     }   
-    if(x == mainFoodRef->getFoodPos().pos->x && y == mainFoodRef->getFoodPos().pos->y){
-        playerPosList->insertHead(objPos(x,y,sym)); 
-        mainFoodRef->generateFood(playerPosList);
-        mainGameMechsRef->incrementScore(1);
-    } else {
-        playerPosList->insertHead(objPos(x,y,sym));
-        playerPosList->removeTail();
+
+    for(int i = 0; i < FOOD_CAP; i++)
+    {   
+        int xFood = foodList->getElement(i).pos->x;
+        int yFood = foodList->getElement(i).pos->y;
+        char foodSym = foodList->getElement(i).symbol;
+
+        if(x == xFood && y == yFood && foodSym == 36)
+        {
+            mainFoodRef->generateFood(playerPosList);
+            mainGameMechsRef->incrementScore(1);
+            hasFood = true;
+            break;
+        } else if (x == xFood && y == yFood && foodSym == char(157))
+        {
+            mainFoodRef->generateFood(playerPosList);
+            for(int j = 0; j < 3; j++) {
+                playerPosList->insertHead(objPos(x,y,sym)); //special food extends by 5
+            }
+            mainGameMechsRef->incrementScore(10);
+            hasFood = true;
+            break;
+        }
     }
 
-
+    playerPosList->insertHead(objPos(x,y,sym));
+    if(!hasFood) playerPosList->removeTail();
 }
 
 // More methods to be added
