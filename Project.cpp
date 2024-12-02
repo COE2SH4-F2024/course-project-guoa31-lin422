@@ -67,7 +67,7 @@ void GetInput(void)
         char input = MacUILib_getChar();
         game->setInput(input);
     } else {
-        //game->clearInput(); //remove to debug
+        game->clearInput(); //remove to debug
     }
 }
 
@@ -101,7 +101,7 @@ void RunLogic(void)
     }
 
 
-    //game->clearInput(); //remove to debug
+    game->clearInput(); //remove to debug
 }
 
 void DrawScreen(void)
@@ -148,9 +148,9 @@ void DrawScreen(void)
         }
         MacUILib_printf("\n");
     }
-    MacUILib_printf("Last key pressed: %c\n", game->getInput());
     MacUILib_printf("Player position: (%d,%d) \n",player->getPlayerPos()->getHeadElement().pos->x,player->getPlayerPos()->getHeadElement().pos->y);
     MacUILib_printf("Food position: (%d,%d)\n", food->getFoodPos().pos->x,food->getFoodPos().pos->y);
+    MacUILib_printf("Score: %d\n", game->getScore());
 }
 
 void LoopDelay(void)
