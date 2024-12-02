@@ -7,7 +7,7 @@
 
 using namespace std;
 
-#define DELAY_CONST 25000
+#define DELAY_CONST 75000
 
 // bool exitFlag;
 // Advised to remove all global variables
