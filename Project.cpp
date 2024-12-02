@@ -7,7 +7,7 @@
 
 using namespace std;
 
-#define DELAY_CONST 100000
+#define DELAY_CONST 25000
 
 // bool exitFlag;
 // Advised to remove all global variables
@@ -39,7 +39,7 @@ int main(void)
         // cout << "Running game logic..." << endl;
         RunLogic();
         // cout << "Drawing screen..." << endl;
-        DrawScreen();  
+        DrawScreen(); 
         LoopDelay();   
     }
 
@@ -54,8 +54,8 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
     game = new GameMechs();
-    player = new Player(game);
     food = new Food(game);
+    player = new Player(game, food);
     food->generateFood(player->getPlayerPos());
 
 
@@ -67,7 +67,7 @@ void GetInput(void)
         char input = MacUILib_getChar();
         game->setInput(input);
     } else {
-        game->clearInput(); //remove to debug
+        //game->clearInput(); //remove to debug
     }
 }
 
@@ -77,8 +77,7 @@ void RunLogic(void)
 
     //Player stuff
     player->updatePlayerDir();
-    player->movePlayer();
-
+    player->movePlayer(); 
 
     if(game->getInput() == 27) {
         game->setExitTrue();
@@ -102,44 +101,61 @@ void RunLogic(void)
     }
 
 
-    game->clearInput(); //remove to debug
+    //game->clearInput(); //remove to debug
 }
 
 void DrawScreen(void)
 {   
+    bool hasPlayer = false;
+    objPosArrayList* playerList = player->getPlayerPos();
+    objPos playerPart;
     MacUILib_clearScreen();    
     for(int i = 0; i < game->getBoardSizeY(); i++)
     {
         for(int j = 0; j < game->getBoardSizeX(); j++)
         {
-            if(j ==  player->getPlayerPos().pos->x && i == player->getPlayerPos().pos->y)
+            hasPlayer = false;
+            for(int k = 0; k < playerList->getSize(); k++) 
             {
-                MacUILib_printf("%c", player->getPlayerPos().symbol);
-            } else if (j == food->getFoodPos().pos->x && i == food->getFoodPos().pos->y)
-            {
-                MacUILib_printf("%c", food->getFoodPos().symbol);
+                playerPart = playerList->getElement(k);
+                if(j == playerPart.pos->x && i == playerPart.pos->y)
+                {
+                    MacUILib_printf("%c", playerPart.symbol);
+                    hasPlayer = true;
+                    break;
+                }
+
             }
-              else if (i == 0 || i == game->getBoardSizeY() - 1)
+            if(!hasPlayer)
             {
-                MacUILib_printf("#");
-            } else if (j == 0 || j == game->getBoardSizeX() - 1)
-            {
-                MacUILib_printf("#");
-            } else 
-            {
-                MacUILib_printf(" ");
+                if (j == food->getFoodPos().pos->x && i == food->getFoodPos().pos->y )
+                {
+                    MacUILib_printf("%c", food->getFoodPos().symbol);
+                }
+                else if (i == 0 || i == game->getBoardSizeY() - 1)
+                {
+                    MacUILib_printf("#");
+                } 
+                else if (j == 0 || j == game->getBoardSizeX() - 1)
+                {
+                    MacUILib_printf("#");
+                } 
+                else 
+                {
+                    MacUILib_printf(" ");
+                }
             }
         }
         MacUILib_printf("\n");
     }
     MacUILib_printf("Last key pressed: %c\n", game->getInput());
-    MacUILib_printf("Player position: (%d,%d) \n",player->getPlayerPos().pos->x,player->getPlayerPos().pos->y);
+    MacUILib_printf("Player position: (%d,%d) \n",player->getPlayerPos()->getHeadElement().pos->x,player->getPlayerPos()->getHeadElement().pos->y);
     MacUILib_printf("Food position: (%d,%d)\n", food->getFoodPos().pos->x,food->getFoodPos().pos->y);
 }
 
 void LoopDelay(void)
 {
-    MacUILib_Delay(DELAY_CONST); // 0.1s delay
+        MacUILib_Delay(DELAY_CONST); // 0.1s delay
 }
 
 

@@ -5,7 +5,6 @@
 #include <time.h>
 #include <objPos.h>
 #include <GameMechs.h>
-#include <Player.h>
 
 
 class Food
@@ -16,7 +15,7 @@ class Food
 
     
     public:
-        void generateFood(objPos blockOff);
+        void generateFood(objPosArrayList* blockOff);
         objPos getFoodPos() const;
         ~Food();
         Food(GameMechs* thisGMRef);
