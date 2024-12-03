@@ -111,9 +111,6 @@ void Player::movePlayer()
         } else if (x == xFood && y == yFood && foodSym == char(157))
         {
             mainFoodRef->generateFood(playerPosList);
-            for(int j = 0; j < 3; j++) {
-                playerPosList->insertHead(objPos(x,y,sym)); //special food extends by 5
-            }
             mainGameMechsRef->incrementScore(10);
             hasFood = true;
             break;
@@ -122,6 +119,15 @@ void Player::movePlayer()
 
     playerPosList->insertHead(objPos(x,y,sym));
     if(!hasFood) playerPosList->removeTail();
+ 
+    for (int i=1; i<playerPosList->getSize(); i++) { //Check self collision
+        if (x==playerPosList->getElement(i).pos->x && y==playerPosList->getElement(i).pos->y) {
+            mainGameMechsRef->setLoseFlag();
+            mainGameMechsRef->setExitTrue();
+            return;
+        }
+    }
+
 }
 
 // More methods to be added

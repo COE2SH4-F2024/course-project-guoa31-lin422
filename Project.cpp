@@ -190,11 +190,13 @@ void CleanUp(void)
     MacUILib_clearScreen();    
     if(game->getLoseFlagStatus() == true) 
     {
-        MacUILib_printf("Custom Lose Message \n");
+        MacUILib_printf("You Lost! \n");
         if(win) {
             MacUILib_printf("You win! (Exceeded Arraylist size)\n");
         }
         MacUILib_printf("Score = %d", game->getScore());
+    } else {
+        MacUILib_printf("Forced Exit!");
     }
 
     MacUILib_uninit();
