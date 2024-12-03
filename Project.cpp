@@ -188,7 +188,6 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();    
-    delete food;
     if(game->getLoseFlagStatus() == true) 
     {
         MacUILib_printf("Custom Lose Message \n");

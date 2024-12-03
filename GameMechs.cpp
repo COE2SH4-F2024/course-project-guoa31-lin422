@@ -43,11 +43,14 @@ GameMechs::GameMechs(int boardX, int boardY)
 }
 
 // do you need a destructor?
-// GameMechs::~GameMechs()
-// {
-
-// }
-// Use default destructor, no dynamic memory allocation
+GameMechs::~GameMechs()
+{
+    for(int i = 0; i < boardSizeY; i++)
+    {
+        delete[] board[i];
+    }
+    delete[] board;
+}
 
 bool GameMechs::getExitFlagStatus() const
 {
