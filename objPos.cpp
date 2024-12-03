@@ -1,5 +1,6 @@
 #include "objPos.h"
 
+// Default constructor, sets (x,y) to (0,0), sets symbol to null and allocates memory for the position structure
 objPos::objPos()
 {
     pos = new Pos;
@@ -8,6 +9,7 @@ objPos::objPos()
     symbol = 0; //NULL
 }
 
+// Parametized constructor, sets x,y and symbol to parameters, and allocates memory for the position structure
 objPos::objPos(int xPos, int yPos, char sym)
 {
     pos = new Pos;
@@ -16,16 +18,15 @@ objPos::objPos(int xPos, int yPos, char sym)
     symbol = sym;
 }
 
-// Respect the rule of six / minimum four
-// [TODO] Implement the missing special member functions to meet the minimum four rule
-
-objPos::~objPos() //Destructor
+//Destructor
+objPos::~objPos()
 {
     delete pos;
     pos = nullptr;
 }
 
-objPos::objPos(const objPos& obj) //Copy 
+// Copy, creates deep copy of objPos
+objPos::objPos(const objPos& obj)
 {
     pos = new Pos;
     pos->x = obj.pos->x;
@@ -33,7 +34,8 @@ objPos::objPos(const objPos& obj) //Copy
     symbol = obj.symbol;
 }   
 
-objPos& objPos::operator= (const objPos& obj) //Copy Assignment
+// Copy Assignment, assigns a deep copy to the given objPos object
+objPos& objPos::operator= (const objPos& obj)
 {
     if(this == &obj) return *this;
     delete pos;
@@ -43,11 +45,10 @@ objPos& objPos::operator= (const objPos& obj) //Copy Assignment
     pos->y = obj.pos->y;
     symbol = obj.symbol;
 
-    return *this;
+    return *this; // Returns a pointer to new objPos
 }
 
-
-
+// Sets the coordinates and symbol of the objPos to the one in the parameters
 void objPos::setObjPos(objPos o)
 {
     pos->x = o.pos->x;
@@ -55,6 +56,7 @@ void objPos::setObjPos(objPos o)
     symbol = o.symbol;
 }
 
+// Sets the coordinates and symbol to the ones in the parameters
 void objPos::setObjPos(int xPos, int yPos, char sym)
 {
     pos->x = xPos;
@@ -62,6 +64,7 @@ void objPos::setObjPos(int xPos, int yPos, char sym)
     symbol = sym;
 }
 
+// Returns a copy of the coordinates and symbol of the objPos
 objPos objPos::getObjPos() const
 {
     objPos returnPos;
@@ -72,16 +75,20 @@ objPos objPos::getObjPos() const
     return returnPos;
 }
 
+// Getter for symbol
 char objPos::getSymbol() const
 {
     return symbol;
 }
 
+// Checks if this position matches the given position.
 bool objPos::isPosEqual(const objPos* refPos) const
 {
     return (refPos->pos->x == pos->x && refPos->pos->y == pos->y);
 }
 
+
+// Gets the symbol if the position matches the given position.
 char objPos::getSymbolIfPosEqual(const objPos* refPos) const
 {
     if(isPosEqual(refPos))
